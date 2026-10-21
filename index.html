@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Dock Hop</title>
+  <script type="module" crossorigin src="./assets/index-CcrsKp5q.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/platform-onestore-B9I8gYex.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-DnfNDBXL.css">
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c" aria-label="게임 화면"></canvas>
+  <button id="gear" class="icon-btn" aria-label="설정 열기" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6v12M15 6v12"/></svg>
+  </button>
+
+  <section id="menu" class="screen">
+    <header class="topbar">
+      <div class="tools">
+        <button id="b-daily" class="icon-btn" aria-label="출석 보상">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/><path d="M12 13v4M10 15h4"/></svg>
+          <i class="dot" id="daily-dot" hidden></i>
+        </button>
+        <button id="b-guide" class="icon-btn" aria-label="게임 방법">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9.2 9a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.2-1.5 2.2v.6"/><circle cx="12" cy="18" r=".6" fill="currentColor"/></svg>
+        </button>
+        <button id="b-prefs" class="icon-btn" aria-label="설정">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+        </button>
+        <button id="b-records" class="icon-btn" aria-label="기록과 업적">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="wallet wallet-row">
+      <span class="pill"><i class="coin"></i><b id="m-coins">0</b></span>
+      <span class="pill"><i class="gem"></i><b id="m-gems">0</b></span>
+    </div>
+    <div class="hero">
+      <h1 class="logo" aria-label="DOCK HOP"><span>D</span><i class="o o-dock"></i><span>CK</span><br><span>H</span><i class="o o-ring"></i><span>P</span></h1>
+      <p class="tagline">놓는 순간, 착지</p>
+      <p class="rating" id="rating" hidden></p>
+      <dl class="records">
+        <div><dt>최고 점수</dt><dd id="m-best">0</dd></div>
+        <div><dt>최고 높이</dt><dd id="m-height">0m</dd></div>
+        <div><dt>최대 콤보</dt><dd id="m-combo">0</dd></div>
+      </dl>
+    </div>
+    <div class="lower">
+      <div class="card" id="missions">
+        <div class="mh"><b>오늘의 미션</b><span id="mi-reset"></span></div>
+        <div id="mi-list"></div>
+      </div>
+      <div class="startitems" id="startitems"></div>
+      <button id="b-start" class="btn-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"/></svg>PLAY</button>
+      <div class="duo">
+        <button id="b-shop" class="btn-sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>상점</button>
+        <button id="b-chal" class="btn-sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>오늘의 챌린지 <b id="chal-left" style="font-family:var(--f-display)">3/3</b></button>
+      </div>
+    </div>
+    <p class="ver" id="ver"></p>
+  </section>
+
+  <section id="over" class="screen dim" hidden>
+    <div class="over-inner">
+      <p class="reason" id="o-reason"></p>
+      <p class="tease" id="o-tease"></p>
+      <p class="score" id="o-score">0</p>
+      <p class="newbest" id="o-new" hidden>NEW BEST</p>
+      <div class="earnrow">
+        <p class="earn" id="o-earn"><i class="coin"></i>+<span id="o-coins">0</span></p>
+        <button id="b-double" class="btn-mini" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.2v5.6l4.6-2.8z" fill="currentColor"/></svg>광고 보고 코인 2배</button>
+      </div>
+      <dl class="records light">
+        <div><dt>최고 점수</dt><dd id="o-best">0</dd></div>
+        <div><dt>높이</dt><dd id="o-height">0m</dd></div>
+        <div><dt>최대 콤보</dt><dd id="o-combo">0</dd></div>
+      </dl>
+      <div class="continue" id="o-continue">
+        <button id="b-continue" class="btn-gold">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.2v5.6l4.6-2.8z" fill="currentColor"/></svg>
+          광고 보고 이어하기<span class="count" id="o-count">5</span>
+        </button>
+        <p class="sub">이 자리에서, 콤보 그대로 계속합니다</p>
+      </div>
+      <button id="b-share" class="btn-mini" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>신기록 이미지로 공유</button>
+      <div class="over-actions" id="o-actions">
+        <button id="b-retry" class="btn-play">다시 하기</button>
+        <button id="b-home" class="btn-sub">메인으로</button>
+        <p class="hint" id="o-adnote" hidden>7판마다 광고가 한 번 나와요. 다음 화면으로 넘어갈 때 재생됩니다.</p>
+      </div>
+    </div>
+    <div class="banner" id="banner" hidden></div>
+  </section>
+
+  <!-- shown only in a plain browser preview, where the Toss ad SDK is not available -->
+  <section id="ad" class="screen adscreen" hidden>
+    <span class="tag">AD</span>
+    <h2 id="ad-title">광고</h2>
+    <div class="adbar" id="adbar"><i></i></div>
+  </section>
+
+  <section id="pause" class="screen panel-screen" hidden>
+    <h2>일시정지</h2>
+    <p>화면을 누르면 이어서 합니다.<br>비행 중이었다면 누른 상태로 이어집니다.</p>
+  </section>
+
+  <section id="prefs" class="screen panel-screen" hidden>
+    <header class="topbar"><h2>설정</h2><button id="b-p-close" class="icon-btn" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="scroll">
+      <div class="row"><label for="p-sound">효과음</label><input type="checkbox" id="p-sound"></div>
+      <div class="row"><label for="p-volume">음량</label><output id="p-volume-v"></output><input type="range" id="p-volume" min="0" max="100" step="5"></div>
+      <div class="row"><label for="p-vibrate">진동</label><input type="checkbox" id="p-vibrate"></div>
+      <div class="row"><label for="p-guide">출발 방향 가이드 선</label><input type="checkbox" id="p-guide"></div>
+      <div class="row nick" id="p-nick-row" hidden><label for="p-nick">랭킹 닉네임</label><input type="text" id="p-nick" maxlength="10" autocomplete="off" spellcheck="false"></div>
+      <button id="b-p-resume" class="wide-btn primary" hidden>계속하기</button>
+      <button id="b-p-quit" class="wide-btn" hidden>이번 판 포기하고 결과 보기</button>
+    </div>
+  </section>
+
+  <section id="guide" class="screen panel-screen" hidden>
+    <header class="topbar"><h2>게임 방법</h2><button id="b-g-close" class="icon-btn" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="guide-body">
+      <div class="guide-art" id="g-art"></div>
+      <h3 id="g-title"></h3>
+      <p id="g-text"></p>
+    </div>
+    <div class="guide-nav">
+      <button id="b-g-prev" class="nav-btn">이전</button>
+      <div class="dots" id="g-dots"></div>
+      <button id="b-g-next" class="nav-btn primary">다음</button>
+    </div>
+  </section>
+
+  <section id="shop" class="screen panel-screen" hidden>
+    <header class="topbar keep">
+      <button id="b-shop-close" class="icon-btn" aria-label="뒤로"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <h2>상점</h2>
+      <div class="wallet">
+        <span class="pill"><i class="coin"></i><b id="sh-coins">0</b></span>
+        <span class="pill"><i class="gem"></i><b id="sh-gems">0</b></span>
+      </div>
+    </header>
+    <nav class="tabs" id="shop-tabs">
+      <button data-tab="items" class="on">아이템</button>
+      <button data-tab="ball">공</button>
+      <button data-tab="trail">트레일</button>
+      <button data-tab="land">착지</button>
+      <button data-tab="dock">도킹 원</button>
+      <button data-tab="bg">배경</button>
+      <button data-tab="obj">오브젝트</button>
+    </nav>
+    <div class="scroll">
+      <div class="grid" id="shop-grid"></div>
+      <p class="note" id="shop-note"></p>
+    </div>
+  </section>
+
+  <section id="daily" class="screen panel-screen" hidden>
+    <header class="topbar"><h2>출석 보상</h2><button id="b-d-close" class="icon-btn" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="daily-body">
+      <p id="d-sub">매일 접속하면 보상이 커져요. 하루라도 빠지면 1일차로 돌아갑니다.</p>
+      <div class="days" id="d-days"></div>
+      <button id="b-d-claim" class="wide-btn primary">받기</button>
+      <button id="b-d-double" class="wide-btn">광고 보고 2배로 받기</button>
+    </div>
+  </section>
+
+  <section id="share" class="screen panel-screen" hidden>
+    <header class="topbar"><h2>신기록 공유</h2><button id="b-sh-close" class="icon-btn" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="share-body">
+      <img id="share-img" alt="신기록 카드">
+      <p>이미지를 길게 눌러 저장하고, 공유하기로 친구에게 도전장을 보내 보세요.</p>
+      <button id="b-sh-share" class="wide-btn primary" style="width:min(300px,100%)">친구에게 도전장 보내기</button>
+    </div>
+  </section>
+
+  <section id="records" class="screen panel-screen" hidden>
+    <header class="topbar"><h2>랭킹</h2><button id="b-r-close" class="icon-btn" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <nav class="tabs" id="rec-tabs">
+      <button data-tab="day" class="on">일간</button>
+      <button data-tab="week">주간</button>
+      <button data-tab="month">월간</button>
+      <button data-tab="ach">업적</button>
+    </nav>
+    <div class="scroll">
+      <div id="rec-list"></div>
+      <div id="rec-chal-wrap">
+        <p class="sect">오늘의 챌린지 TOP 5</p>
+        <div id="rec-chal"></div>
+      </div>
+      <button id="b-r-board" class="wide-btn">토스 게임센터 전체 랭킹</button>
+    </div>
+  </section>
+
+  <section id="exit" class="screen panel-screen" hidden>
+    <h2>게임을 종료할까요?</h2>
+    <p>기록과 코인은 저장되어 있어요.</p>
+    <button id="b-x-stay" class="wide-btn primary">계속하기</button>
+    <button id="b-x-quit" class="wide-btn">종료하기</button>
+  </section>
+
+  <div id="toast" hidden></div>
+</div>
+</body>
+</html>
